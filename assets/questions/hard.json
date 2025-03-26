@@ -1,0 +1,452 @@
+{
+    "questions": [
+        {
+            "clue": "Benda yang membingkai foto atau karya seni",
+            "answer": ["F", "I", "G", "U", "R", "A"]
+        },
+        {
+            "clue": "Pakaian atasan yang memiliki kerah",
+            "answer": ["K", "E", "M", "E", "J", "A"]
+        },
+        {
+            "clue": "Benda yang terbuat dari serat pohon pinus yang biasanya digunakan untuk menulis",
+            "answer": ["K", "E", "R", "T", "A", "S"]
+        },
+        {
+            "clue": "Benda pelindung saat hujan",
+            "answer": ["P", "A", "Y", "U", "N", "G"]
+        },
+        {
+            "clue": "Benda elektronik yang digunakan untuk bekerja, belajar, atau bermain",
+            "answer": ["L", "A", "P", "T", "O", "P"]
+        },
+        {
+            "clue": "Alat tulis yang menggunakan tinta untuk menulis dipapan tulis",
+            "answer": ["S", "P", "I", "D", "O", "L"]
+        },
+        {
+            "clue": "Alat tulis yang menggunakan tinta untuk menulis di buku tulis",
+            "answer": ["P", "U", "L", "P", "E", "N"]
+        },
+        {
+            "clue": "Buah kesukaan monyet",
+            "answer": ["P", "I", "S", "A", "N", "G"]
+        },
+        {
+            "clue": "Susu yang difermentasi akan menghasilkan",
+            "answer": ["Y", "O", "G", "U", "R", "T"]
+        },
+        {
+            "clue": "Benda untuk menjaga privasi dan digantung di jendela",
+            "answer": ["G", "O", "R", "D", "E", "N"]
+        },
+        {
+            "clue": "Benda yang menompang kepala saat tidur",
+            "answer": ["B", "A", "N", "T", "A", "L"]
+        },
+        {
+            "clue": "Tempat menyimpan pakaian",
+            "answer": ["L", "E", "M", "A", "R", "I"]
+        },
+        {
+            "clue": "Benda untuk menaruh makanan saat makan",
+            "answer": ["P", "I", "R", "I", "N", "G"]
+        },
+        {
+            "clue": "Hewan yang dapat dijadikan peliharaan dan menjaga rumah",
+            "answer": ["A", "N", "J", "I", "N", "G"]
+        },
+        {
+            "clue": "Hewan yang mengeluarkan suara 'Meow'",
+            "answer": ["K", "U", "C", "I", "N", "G"]
+        },
+        {
+            "clue": "Buah yang memiliki bau yang kuat dan berduri",
+            "answer": ["D", "U", "R", "I", "A", "N"]
+        },
+        {
+            "clue": "Buah yang cocok dimakan dengan ketan",
+            "answer": ["M", "A", "N", "G", "G", "A"]
+        },
+        {
+            "clue": "Tanaman buah yang tumbuh merambat dan dalam 1 tangkai terdiri banyak buah",
+            "answer": ["A", "N", "G", "G", "U", "R"]
+        },
+        {
+            "clue": "Hewan yang dapat terbang dan berkicau",
+            "answer": ["B", "U", "R", "U", "N", "G"]
+        },
+        {
+            "clue": "Benda yang digunakan untuk mengecek penampilan kita adalah",
+            "answer": ["C", "E", "R", "M", "I", "N"]
+        },
+        {
+            "clue": "Makanan khas Semarang adalah",
+            "answer": ["L", "U", "N", "P", "I", "A"]
+        },
+        {
+            "clue": "Buah yang mirip durian",
+            "answer": ["N", "A", "N", "K", "A", "A"]
+        },
+        {
+            "clue": "Hewan yang tubuhnya dipenuhi duri",
+            "answer": ["L", "A", "N", "D", "A", "K"]
+        },
+        {
+            "clue": "Kendaraan yang memiliki gerbong",
+            "answer": ["K", "E", "R", "E", "T", "A"]
+        },
+        {
+            "clue": "Lambang negara Indonesia adalah",
+            "answer": ["G", "A", "R", "U", "D", "A"]
+        },
+        {
+            "clue": "Bangunan yang menjulang tinggi",
+            "answer": ["G", "E", "D", "U", "N", "G"]
+        },
+        {
+            "clue": "Ibu kota Inggris adalah",
+            "answer": ["L", "O", "N", "D", "O", "N"]
+        },
+        {
+            "clue": "Pahlawan Pattimura berasal dari",
+            "answer": ["M", "A", "L", "U", "K", "U"]
+        },
+        {
+            "clue": "Minyak esensial yang digunakan untuk memberikan wangi pada tubuh",
+            "answer": ["P", "A", "R", "F", "U", "M"]
+        },
+        {
+            "clue": "Alat makan yang berbentuk cekung dan oval",
+            "answer": ["S", "E", "N", "D", "O", "K"]
+        },
+        {
+            "clue": "Alat makan yang berbentuk dua batang kayu sama panjang",
+            "answer": ["S", "U", "M", "P", "I", "T"]
+        },
+        {
+            "clue": "Kegiatan menggerakkan tubuh secara teratur biasanya diiringi musik atau lagu",
+            "answer": ["M", "E", "N", "A", "R", "I"]
+        },
+        {
+            "clue": "Tenaga kesehatan yang memiliki pengetahuan untuk mendiagnosis atau menyembuhkan penyakit",
+            "answer": ["D", "O", "K", "T", "E", "R"]
+        },
+        {
+            "clue": "Satuan pengamanan adalah kepanjangan",
+            "answer": ["S", "A", "T", "P", "A", "M"]
+        },
+        {
+            "clue": "Sisa buangan dari manusia yang tidak digunakan lagi",
+            "answer": ["S", "A", "M", "P", "A", "H"]
+        },
+        {
+            "clue": "Alas kaki yang terbuka pada bagian jari kaki atau tumit",
+            "answer": ["S", "A", "N", "D", "A", "L"]
+        },
+        {
+            "clue": "Bagian tubuh yang berada di atas leher terdiri dari otak, mata, telinga, hidung",
+            "answer": ["K", "E", "P", "A", "L", "A"]
+        },
+        {
+            "clue": "Buah yang mempunyai kulit keras dan terdapat air didalamnya",
+            "answer": ["K", "E", "L", "A", "P", "A"]
+        },
+        {
+            "clue": "Nama padang pasir terbesar di dunia",
+            "answer": ["S", "A", "H", "A", "R", "A"]
+        },
+        {
+            "clue": "Negara matahari terbit",
+            "answer": ["J", "A", "P", "A", "N", "G"]
+        },
+        {
+            "clue": "Berkaitan dengan masyarakat",
+            "answer": ["S", "O", "S", "I", "A", "L"]
+        },
+        {
+            "clue": "Partikel padat berbentuk butiran halus biasanya sebagai bahan pembuatan kue",
+            "answer": ["T", "E", "P", "U", "N", "G"]
+        },
+        {
+            "clue": "Tanaman sereal berwarna kuning",
+            "answer": ["J", "A", "G", "U", "N", "G"]
+        },
+        {
+            "clue": "Tanaman yang berwarna ungu dan panjang",
+            "answer": ["T", "E", "R", "O", "N", "G"]
+        },
+        {
+            "clue": "Zat kimia berwarna putih sebagai pembersih rumah tangga atau deterjen",
+            "answer": ["B", "O", "R", "A", "K", "S"]
+        },
+        {
+            "clue": "Perjanjian antara peminjam dan pemberi pinjaman",
+            "answer": ["H", "U", "T", "A", "N", "G"]
+        },
+        {
+            "clue": "Tempat usaha yang menyediakan makanan dan minuman biasanya ada di sekolah, kantor",
+            "answer": ["K", "A", "N", "T", "I", "N"]
+        },
+        {
+            "clue": "Tempat dimana orang-orang bekerja bersama-sama untuk mencapai tujuan yang sudah ditetapkan",
+            "answer": ["K", "A", "N", "T", "O", "R"]
+        },
+        {
+            "clue": "Ruang dibawah benda berkaki atau bertiang",
+            "answer": ["K", "O", "L", "O", "N", "G"]
+        },
+        {
+            "clue": "Alat untuk mencapai tujuan tertentu",
+            "answer": ["S", "A", "R", "A", "N", "A"]
+        },
+        {
+            "clue": "Pertemuan formal untuk membahas suatu masalah dan menghasilkan kesepakatan",
+            "answer": ["S", "I", "D", "A", "N", "G"]
+        },
+        {
+            "clue": "Profesi yang bertugas menjaga keamanan dan ketertiban masyarakat",
+            "answer": ["P", "O", "L", "I", "S", "I"]
+        },
+        {
+            "clue": "Anggota yang membentang dari bahu hingga siku",
+            "answer": ["L", "E", "N", "G", "A", "N"]
+        },
+        {
+            "clue": "Karya seni rupa dibuat dengan menempelkan berbagai macam potongan bahan",
+            "answer": ["K", "O", "L", "A", "S", "E"]
+        },
+        {
+            "clue": "Alat musik tiup kayu",
+            "answer": ["S", "U", "L", "I", "N", "G"]
+        },
+        {
+            "clue": "Karakter bebek jantan pada Mickey Mouse",
+            "answer": ["D", "O", "N", "A", "L", "D"]
+        },
+        {
+            "clue": "Hewan berbadan pipih penghisap darah",
+            "answer": ["L", "I", "N", "T", "A", "H"]
+        },
+        {
+            "clue": "Serangga penghisap darah",
+            "answer": ["N", "Y", "A", "M", "U", "K"]
+        },
+        {
+            "clue": "Seni rupa tiga dimensi dibuat dengan cara dipahat, dicetak, atau dirakit",
+            "answer": ["P", "A", "T", "U", "N", "G"]
+        },
+        {
+            "clue": "Mainan yang bentuknya bermacam-macam seperti hewan atau manusia",
+            "answer": ["B", "O", "N", "E", "K", "A"]
+        },
+        {
+            "clue": "Sensasi tidak nyaman di kepala, seperti berputar, atau merasa terbalik",
+            "answer": ["P", "U", "S", "I", "N", "G"]
+        },
+        {
+            "clue": "Kembali ke titik awal atau asal",
+            "answer": ["P", "U", "L", "A", "N", "G"]
+        },
+        {
+            "clue": "Kendaraan air yang lebih kecil dari kapal laut",
+            "answer": ["P", "E", "R", "A", "H", "U"]
+        },
+        {
+            "clue": "Pakaian luar yang menutupi pinggang hingga mata kaki atau hanya sampai lutut",
+            "answer": ["C", "E", "L", "A", "N", "A"]
+        },
+        {
+            "clue": "Selalu mendapat kesialan, kemalangan atau kesusahan",
+            "answer": ["C", "E", "L", "A", "K", "A"]
+        },
+        {
+            "clue": "Pohon yang hijau sepanjang tahun, daunnya berbentuk jarum, tumbuh tinggi lurus",
+            "answer": ["C", "E", "M", "A", "R", "A"]
+        },
+        {
+            "clue": "Hari setelah Senin",
+            "answer": ["S", "E", "L", "A", "S", "A"]
+        },
+        {
+            "clue": "Bilangan asli diantara 999 dan 1001",
+            "answer": ["S", "E", "R", "I", "B", "U"]
+        },
+        {
+            "clue": "Sesuatu yang indah, elok, dan menarik",
+            "answer": ["C", "A", "N", "T", "I", "K"]
+        },
+        {
+            "clue": "Berbentuk lingkaran atau melengkung",
+            "answer": ["B", "U", "N", "D", "A", "R"]
+        },
+        {
+            "clue": "Segala sesuatu yang dikenakan pada tubuh mulai ujung rambut hingga ujung kaki",
+            "answer": ["B", "U", "S", "A", "N", "A"]
+        },
+        {
+            "clue": "Kota pengrajin kayu atau mebel",
+            "answer": ["J", "E", "P", "A", "R", "A"]
+        },
+        {
+            "clue": "Kota terbesar kedua di Jawa Timur",
+            "answer": ["M", "A", "L", "A", "N", "G"]
+        },
+        {
+            "clue": "Bahan tambahan pangan untuk meningkatkan rasa dan aroma",
+            "answer": ["P", "E", "R", "I", "S", "A"]
+        },
+        {
+            "clue": "Hewan yang mirip cumi-cumi",
+            "answer": ["S", "O", "T", "O", "N", "G"]
+        },
+        {
+            "clue": "Perasaan yang muncul dari perhatian, pengertian, dan ketulusan hati terhadap seseorang",
+            "answer": ["S", "A", "Y", "A", "N", "G"]
+        },
+        {
+            "clue": "Lawan kata tarik",
+            "answer": ["D", "O", "R", "O", "N", "G"]
+        },
+        {
+            "clue": "Perangkat yang bisa memancarkan atau menerima gelombang elektromagnetik",
+            "answer": ["A", "N", "T", "E", "N", "A"]
+        },
+        {
+            "clue": "Dewi kebijaksanaan, perang, dan kerajinan dalam mitologi Yunani",
+            "answer": ["A", "T", "H", "E", "N", "A"]
+        },
+        {
+            "clue": "Hal yang melatarbelakangi seseorang melakukan sesuatu",
+            "answer": ["A", "L", "A", "S", "A", "N"]
+        },
+        {
+            "clue": "Kependekan dari warung internet",
+            "answer": ["W", "A", "R", "N", "E", "T"]
+        },
+        {
+            "clue": "Daging sapi yang diolah dengan diawetkan dalam air garam",
+            "answer": ["K", "O", "R", "N", "E", "T"]
+        },
+        {
+            "clue": "Keju dari Enrekang, Sulawesi Selatan",
+            "answer": ["D", "A", "N", "G", "K", "E"]
+        },
+        {
+            "clue": "Gendang yang berbentuk bundar dan pipih",
+            "answer": ["R", "E", "B", "A", "N", "A"]
+        },
+        {
+            "clue": "Sekumpulan unsur yang saling berinteraksi dan saling bergantung satu sama lain",
+            "answer": ["S", "I", "S", "T", "E", "M"]
+        },
+        {
+            "clue": "Area tertutup yang menaungi gedung-gedung universitas",
+            "answer": ["K", "A", "M", "P", "U", "S"]
+        },
+        {
+            "clue": "Rangkaian pesan berbentuk suara, gambar, atau suara dan gambar melaui televisi atau radio",
+            "answer": ["S", "I", "A", "R", "A", "M"]
+        },
+        {
+            "clue": "Benda yang digunakan untuk menutupi kepala",
+            "answer": ["K", "A", "P", "U", "R", "A"]
+        },
+        {
+            "clue": "Benda untuk menulis yang ujungnya tajam dan terbuat dari kayu",
+            "answer": ["P", "E", "N", "C", "I", "L"]
+        },
+        {
+            "clue": "Tempat penyimpanan barang berbentuk kotak dan biasanya tertutup",
+            "answer": ["L", "O", "K", "E", "R", "A"]
+        },
+        {
+            "clue": "Alat untuk mengukur waktu",
+            "answer": ["J", "A", "M", "P", "A", "N"]
+        },
+        {
+            "clue": "Bagian dari tubuh manusia yang ada di bagian tengah kepala",
+            "answer": ["M", "A", "T", "A", "H", "A"]
+        },
+        {
+            "clue": "Nama kota besar di Sumatra",
+            "answer": ["P", "A", "D", "A", "N", "G"]
+        },
+        {
+            "clue": "Alat yang digunakan untuk membuat gambar atau tulisan pada kertas",
+            "answer": ["P", "A", "S", "T", "E", "L"]
+        },
+        {
+            "clue": "Alat yang dipakai untuk membersihkan debu dari permukaan benda",
+            "answer": ["S", "E", "K", "O", "S", "I"]
+        },
+        {
+            "clue": "Sebutan untuk tanaman berbiji terbuka",
+            "answer": ["P", "E", "C", "I", "S", "I"]
+        },
+        {
+            "clue": "Kota dengan julukan Kota Gudeg",
+            "answer": ["Y", "O", "G", "Y", "A", "K"]
+        },
+        {
+            "clue": "Alat yang digunakan untuk memotong benda keras seperti kayu",
+            "answer": ["G", "E", "L", "A", "S", "I"]
+        },
+        {
+            "clue": "Jenis makanan dengan bahan dasar tepung terigu dan air",
+            "answer": ["M", "I", "A", "M", "I", "N"]
+        },
+        {
+            "clue": "Pohon yang menghasilkan minyak goreng",
+            "answer": ["K", "A", "R", "A", "Y", "U"]
+        },
+        {
+            "clue": "Alat untuk memotong rambut",
+            "answer": ["S", "I", "T", "S", "U", "R"]
+        },
+        {
+            "clue": "Alat untuk membuka tutup botol",
+            "answer": ["O", "P", "E", "N", "E", "R"]
+        },
+        {
+            "clue": "Makanan dari ketan yang dibungkus daun pisang",
+            "answer": ["K", "O", "L", "O", "K", "A"]
+        },
+        {
+            "clue": "Jenis tanaman yang bisa digunakan untuk obat atau bumbu masakan",
+            "answer": ["K", "E", "L", "A", "P", "A"]
+        },
+        {
+            "clue": "Makhluk hidup yang memiliki bentuk fisik kecil dan terbang",
+            "answer": ["L", "I", "B", "E", "L", "L"]
+        },
+        {
+            "clue": "Bahan pangan yang berasal dari air laut",
+            "answer": ["M", "A", "R", "I", "N", "E"]
+        },
+        {
+            "clue": "Bunga yang memiliki kelopak berwarna merah dan sering dikaitkan dengan percintaan",
+            "answer": ["R", "O", "S", "E", "S", "O"]
+        },
+        {
+            "clue": "Pekerjaan yang berhubungan dengan pengiriman barang",
+            "answer": ["K", "U", "A", "L", "I", "T"]
+        },
+        {
+            "clue": "Tumbuhan yang menghasilkan kertas dan kadang digunakan untuk bahan bangunan",
+            "answer": ["B", "A", "M", "B", "U", "T"]
+        },
+        {
+            "clue": "Nama benua yang terletak di sebelah timur Indonesia",
+            "answer": ["A", "S", "I", "A", "N", "I"]
+        },
+        {
+            "clue": "Alat makan yang berbentuk panjang dan digunakan untuk mengambil makanan",
+            "answer": ["S", "E", "P", "A", "T", "U"]
+        },
+        {
+            "clue": "Kapal besar yang biasanya digunakan untuk membawa barang",
+            "answer": ["S", "A", "R", "I", "A", "T"]
+        }
+    ]
+}

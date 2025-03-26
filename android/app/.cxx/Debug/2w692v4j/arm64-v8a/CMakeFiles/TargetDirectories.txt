@@ -1,0 +1,2 @@
+D:/PPLG PROJECT/spacewordgameapp/android/app/.cxx/Debug/2w692v4j/arm64-v8a/CMakeFiles/edit_cache.dir
+D:/PPLG PROJECT/spacewordgameapp/android/app/.cxx/Debug/2w692v4j/arm64-v8a/CMakeFiles/rebuild_cache.dir

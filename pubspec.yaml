@@ -1,0 +1,97 @@
+name: spacewordgameapp
+description: "A new Flutter project."
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.4
+
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+dependencies:
+  flutter:
+    sdk: flutter
+  shared_preferences: ^2.0.15
+  provider: ^6.0.0
+  supabase_flutter: ^2.8.4
+  flutter_dotenv: ^5.1.0
+  import_sorter: ^4.6.0
+  supabase_auth_ui: ^0.5.4
+  audioplayers: ^5.2.1
+  # cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_launcher_icons: ^0.13.1
+  flutter_lints: ^4.0.0
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/image/Icon Game.png"
+
+import_sorter:
+  comments: false # Optional, defaults to true
+  # emojis: true # Optional, defaults to false
+  # ignored_files: # Optional, defaults to []
+  #   - \/lib\/*
+
+# The following section is specific to Flutter packages.
+flutter:
+  uses-material-design: true
+
+  fonts:
+    - family: FontdinerSwanky
+      fonts:
+        - asset: assets/fonts/FontdinerSwanky-Regular.ttf
+
+  assets:
+    - .env
+    - assets/bodies/Alien Biru.png
+    - assets/bodies/Alien Hijau.png
+    - assets/bodies/Alien Pink.png
+    - assets/bodies/Alien Kuning.png
+    - assets/bodies/Alien Ungu.png
+    - assets/clothes/KOSTUM PENCURI.png
+    - assets/clothes/Kostum Domba.png
+    - assets/clothes/Kostum Iblis.png
+    - assets/clothes/Kostum Koki.png
+    - assets/clothes/Kostum Raja.png
+    - assets/clothes/Kostum Rubah.png
+    - assets/clothes/Kostum Sapi.png
+    - assets/clothes/Kostum Koki Revisi.png
+    - assets/clothes/Kostum Koki Revisi lagi.png
+    - assets/clothes/Kostum Santa.png
+    - assets/clothes/Kostum Iblis Revisi.png
+    - assets/clothes/Kostum Superhero.png
+    - assets/image/LOGO GEM DEV REVISI.png
+    - assets/image/BackgroundGalaxy.png
+    - assets/image/LogoSpaceword.png
+    - assets/image/jet.png
+    - assets/image/1.png
+    - assets/image/3.png
+    - assets/image/7.png
+    - assets/questions/easy.json
+    - assets/questions/medium.json
+    - assets/questions/hard.json
+    - assets/sound/backsound.mp3
