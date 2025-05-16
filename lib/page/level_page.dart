@@ -404,8 +404,6 @@ class _EasyLevelState extends State<EasyLevel>
                       children: [
                         Image.asset(characterProvider.selectedBody,
                             height: 195),
-                        Image.asset(characterProvider.selectedClothes,
-                            height: 195),
                       ],
                     ),
                   );
@@ -810,8 +808,6 @@ class _MediumLevelState extends State<MediumLevel>
                       alignment: Alignment.center,
                       children: [
                         Image.asset(characterProvider.selectedBody,
-                            height: 200),
-                        Image.asset(characterProvider.selectedClothes,
                             height: 200),
                       ],
                     ),
@@ -1222,8 +1218,6 @@ class _HardLevelState extends State<HardLevel>
                       alignment: Alignment.center,
                       children: [
                         Image.asset(characterProvider.selectedBody,
-                            height: 200),
-                        Image.asset(characterProvider.selectedClothes,
                             height: 200),
                       ],
                     ),

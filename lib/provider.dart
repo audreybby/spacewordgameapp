@@ -60,21 +60,21 @@ class CoinProvider with ChangeNotifier {
 
   void _loadCoins() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    _coins = prefs.getInt('coins') ?? 1000;
-    notifyListeners();
+    int? storedCoins = prefs.getInt('coins');
+    if (storedCoins != null) {
+      _coins = storedCoins;
+      notifyListeners();
+    }
   }
 }
 
 class CharacterProvider with ChangeNotifier {
   String _selectedBody = 'assets/bodies/Alien Biru.png';
-  String _selectedClothes = 'assets/clothes/KOSTUM PENCURI.png';
 
   String get selectedBody => _selectedBody;
-  String get selectedClothes => _selectedClothes;
 
   void updateCharacter(String body, String clothes) {
     _selectedBody = body;
-    _selectedClothes = clothes;
     _saveToPreferences();
     notifyListeners();
   }
@@ -82,15 +82,11 @@ class CharacterProvider with ChangeNotifier {
   Future<void> _saveToPreferences() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('selectedBody', _selectedBody);
-    await prefs.setString('selectedClothes', _selectedClothes);
   }
 
   Future<void> loadFromPreferences() async {
     final prefs = await SharedPreferences.getInstance();
     _selectedBody =
         prefs.getString('selectedBody') ?? 'assets/bodies/Alien Biru.png';
-    _selectedClothes = prefs.getString('selectedClothes') ??
-        'assets/clothes/KOSTUM PENCURI.png';
-    notifyListeners();
   }
 }

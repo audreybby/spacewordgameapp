@@ -3,13 +3,11 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-// Widget Pop-up Settings dengan animasi timbul dan tombol close di luar container
 class SettingsModal extends StatefulWidget {
   const SettingsModal({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _SettingsModalState createState() => _SettingsModalState();
+  State<SettingsModal> createState() => _SettingsModalState();
 }
 
 class _SettingsModalState extends State<SettingsModal>
@@ -24,28 +22,22 @@ class _SettingsModalState extends State<SettingsModal>
   void initState() {
     super.initState();
     _imageFuture = _loadImage('assets/background/sound.png');
-
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
-
     _scaleAnimation = CurvedAnimation(
       parent: _animationController,
       curve: Curves.easeOutBack,
     );
-
-    // Mulai animasi timbul
     _animationController.forward();
   }
 
-  Future<ui.Image> _loadImage(String assetPath) async {
-    final ByteData data = await rootBundle.load(assetPath);
-    final Uint8List list = data.buffer.asUint8List();
-    final Completer<ui.Image> completer = Completer();
-    ui.decodeImageFromList(list, (ui.Image img) {
-      completer.complete(img);
-    });
+  Future<ui.Image> _loadImage(String path) async {
+    final data = await rootBundle.load(path);
+    final list = data.buffer.asUint8List();
+    final completer = Completer<ui.Image>();
+    ui.decodeImageFromList(list, (img) => completer.complete(img));
     return completer.future;
   }
 
@@ -56,7 +48,10 @@ class _SettingsModalState extends State<SettingsModal>
   }
 
   Widget buildSlider(
-      IconData icon, double value, ValueChanged<double> onChanged) {
+    IconData icon,
+    double value,
+    ValueChanged<double> onChanged,
+  ) {
     return Row(
       children: [
         Icon(icon, color: Colors.yellow, size: 30),
@@ -70,25 +65,25 @@ class _SettingsModalState extends State<SettingsModal>
                 return SliderTheme(
                   data: SliderTheme.of(context).copyWith(
                     trackHeight: 10,
-                    activeTrackColor: Colors.white,
+                    activeTrackColor: const Color(0xFFB19CD9),
                     inactiveTrackColor: Colors.grey,
                     thumbShape: CustomSliderThumbImage(snapshot.data!),
-                    overlayColor: Colors.transparent,
-                    showValueIndicator: ShowValueIndicator.never,
-                    tickMarkShape:
-                        const RoundSliderTickMarkShape(tickMarkRadius: 0),
+                    overlayColor: const Color(0xFFB19CD9),
                   ),
                   child: Slider(
                     value: value,
                     min: 0.0,
                     max: 1.0,
-                    label: (value * 100).toInt().toString(),
                     onChanged: onChanged,
                   ),
                 );
               } else {
-                return const Slider(
-                    value: 0.5, min: 0, max: 1, onChanged: null);
+                return Slider(
+                  value: value,
+                  min: 0.0,
+                  max: 1.0,
+                  onChanged: onChanged,
+                );
               }
             },
           ),
@@ -106,52 +101,55 @@ class _SettingsModalState extends State<SettingsModal>
         child: Stack(
           clipBehavior: Clip.none,
           children: [
-            // Konten popup utama
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
-                  colors: [Color(0xFFAA55FF), Color(0xFF7F18C8)],
+                  colors: [Color(0xFFBD7BFF), Color(0xFF7F18C8)],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 borderRadius: BorderRadius.circular(25),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.white.withValues(alpha: 0.5),
+                    blurRadius: 10,
+                    offset: const Offset(0, 5),
+                  ),
+                ],
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Judul popup di tengah
-                  const Center(
-                    child: Text(
-                      "PENGATURAN",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontFamily: 'FontdinerSwanky',
-                        color: Color(0xFFFFF50B),
-                      ),
+                  const Text(
+                    "PENGATURAN",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontFamily: 'FontdinerSwanky',
+                      color: Color(0xFFFFF50B),
                     ),
                   ),
                   const SizedBox(height: 20),
-                  // Slider musik
-                  buildSlider(Icons.music_note, _musicVolume, (value) {
-                    setState(() => _musicVolume = value);
-                  }),
-                  // Slider sound
-                  buildSlider(Icons.volume_up, _soundVolume, (value) {
-                    setState(() => _soundVolume = value);
-                  }),
+                  buildSlider(
+                    Icons.music_note,
+                    _musicVolume,
+                    (val) => setState(() => _musicVolume = val),
+                  ),
+                  buildSlider(
+                    Icons.volume_up,
+                    _soundVolume,
+                    (val) => setState(() => _soundVolume = val),
+                  ),
                   const SizedBox(height: 20),
                   SizedBox(
                     width: 120,
                     child: ElevatedButton(
-                      onPressed: () {
-                        // Aksi tombol "KELUAR"
-                      },
+                      onPressed: () => SystemNavigator.pop(),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        backgroundColor: const Color.fromARGB(255, 200, 50, 39),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                       child: const Text(
@@ -167,18 +165,29 @@ class _SettingsModalState extends State<SettingsModal>
                 ],
               ),
             ),
-            // Tombol close (X) yang diletakkan di luar popup
             Positioned(
               top: -10,
               right: -10,
-              child: IconButton(
-                icon: const Icon(Icons.close, color: Colors.yellow, size: 26),
-                onPressed: () {
-                  // Reverse animasi sebelum pop-up ditutup
-                  _animationController.reverse().then((_) {
-                    Navigator.of(context).pop();
-                  });
-                },
+              child: GestureDetector(
+                onTap: () => _animationController.reverse().then((_) {
+                  if (mounted) Navigator.of(context).pop();
+                }),
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: const Color(0xFFDBB3F8),
+                      width: 2,
+                    ),
+                    color: const Color(0xFFC465ED),
+                  ),
+                  child: const Icon(
+                    Icons.close,
+                    color: Colors.yellow,
+                    size: 35,
+                  ),
+                ),
               ),
             ),
           ],
@@ -188,81 +197,15 @@ class _SettingsModalState extends State<SettingsModal>
   }
 }
 
-// Tombol dengan efek gradient & shadow
-class GradientButton extends StatelessWidget {
-  final String text;
-  final VoidCallback onPressed;
-  final double? fontSize;
-
-  const GradientButton({
-    super.key,
-    required this.text,
-    required this.onPressed,
-    this.fontSize,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 5),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            // ignore: deprecated_member_use
-            color: Colors.white.withOpacity(0.5),
-            blurRadius: 10,
-            spreadRadius: 2,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.zero,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-          backgroundColor: Colors.transparent,
-        ),
-        child: Ink(
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [Color(0xFFAA55FF), Color(0xFF7F18C8)],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-            ),
-            borderRadius: BorderRadius.circular(14),
-          ),
-          child: Container(
-            width: 160,
-            height: 55,
-            alignment: Alignment.center,
-            child: Text(
-              text,
-              style: TextStyle(
-                fontFamily: 'FontdinerSwanky',
-                fontSize: fontSize ?? 25,
-                color: const Color(0xFFFFF50B),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// Custom thumb shape untuk slider menggunakan gambar
+// ----------------------------- SLIDER THUMB
 class CustomSliderThumbImage extends SliderComponentShape {
   final ui.Image image;
-  // Ukuran thumb yang diinginkan (sesuaikan nilainya jika perlu)
   final double thumbSize;
-  CustomSliderThumbImage(this.image, {this.thumbSize = 50.0});
+  CustomSliderThumbImage(this.image, {this.thumbSize = 50});
 
   @override
-  Size getPreferredSize(bool isEnabled, bool isDiscrete) {
-    return Size(thumbSize, thumbSize);
-  }
+  Size getPreferredSize(bool isEnabled, bool isDiscrete) =>
+      Size(thumbSize, thumbSize);
 
   @override
   void paint(
@@ -280,7 +223,6 @@ class CustomSliderThumbImage extends SliderComponentShape {
     required Size sizeWithOverflow,
   }) {
     final Canvas canvas = context.canvas;
-    // Menggunakan ukuran thumbSize yang telah ditentukan
     final Rect imageRect = Rect.fromCenter(
       center: center,
       width: thumbSize,

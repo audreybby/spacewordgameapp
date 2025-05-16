@@ -1,83 +1,117 @@
 import 'package:flutter/material.dart';
-import 'package:spacewordgameapp/page/choose_level_page.dart';
+import 'dart:async';
+import 'package:spacewordgameapp/page/character_selection.dart';
 import 'package:spacewordgameapp/settings.dart';
+import 'package:spacewordgameapp/soundefx.dart';
+import 'package:spacewordgameapp/audioplayers.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+// import 'package:supabase_auth_ui/supabase_auth_ui.dart';
+// import 'package:spacewordgameapp/constants/styles.dart';
+// import 'package:spacewordgameapp/page/auth_page.dart';
+// import 'package:spacewordgameapp/page/character_customization_page.dart';
+// import 'package:spacewordgameapp/page/choose_level_page.dart';
+// import 'package:spacewordgameapp/ui/custom_button.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
+
+class WelcomePage extends StatefulWidget {
+  const WelcomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: StartPage(),
-    );
-  }
+  State<WelcomePage> createState() => _WelcomePageState();
 }
 
-class StartPage extends StatelessWidget {
-  const StartPage({super.key});
+class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
+  final AudioService _audioService = AudioService();
+  SoundEffects sound = SoundEffects();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _audioService.playBackgroundMusic('sound/backsound.mp3');
+    _checkLoginStatus();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    // Logika untuk menghentikan/melanjutkan musik berdasarkan status aplikasi
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.paused) {
+      // Hentikan musik saat aplikasi tidak aktif atau dijeda
+      _audioService.stopMusic();
+    } else if (state == AppLifecycleState.resumed) {
+      // Mulai kembali musik saat aplikasi aktif kembali
+      _audioService.playBackgroundMusic('sound/backsound.mp3');
+    }
+  }
+
+  @override
+  void dispose() {
+    // Hapus observer dan hentikan musik saat halaman dihapus
+    WidgetsBinding.instance.removeObserver(this);
+    _audioService.dispose();
+    super.dispose();
+  }
+
+  Future<void> _checkLoginStatus() async {
+    // Tambahkan implementasi untuk memeriksa status login
+  }
+
+  // void _navigateWithScale(BuildContext context, Widget page) {
+  //   Navigator.of(context).push(
+  //     PageRouteBuilder(
+  //       pageBuilder: (context, animation, secondaryAnimation) => page,
+  //       transitionsBuilder: (context, animation, secondaryAnimation, child) {
+  //         final scale = Tween<double>(begin: 0.9, end: 1.0).animate(
+  //           CurvedAnimation(parent: animation, curve: Curves.easeInOut),
+  //         );
+  //         return ScaleTransition(scale: scale, child: child);
+  //       },
+  //     ),
+  //   );
+  // }
+
+  void _showSettingsDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) => const SettingsModal(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          // Background
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/image/BackgroundGalaxy.png'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          // Konten
+          const _BackgroundImage(),
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Spacer(),
-
-                // Gambar di tengah
-                SizedBox(
+                Image.asset(
+                  'assets/image/LogoSpaceword.png',
                   width: 600,
                   height: 300,
-                  child: Image.asset(
-                    'assets/image/LogoSpaceword.png',
-                    fit: BoxFit.contain,
-                  ),
                 ),
-
-                const SizedBox(height: 40), // Jarak antara gambar dan tombol
-
-                // Tombol Start dengan Shadow
+                const SizedBox(height: 40),
                 GradientButton(
-                  text: 'START',
+                  text: 'MULAI',
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const GameLevelsPage(),
-                      ),
-                    );
+                    sound.clickSound();
+                    Navigator.of(context).pushReplacementNamed('/charselect');
                   },
                 ),
-
-                const SizedBox(height: 20), // Jarak antara tombol
-
-                // Tombol Settings dengan Shadow
+                const SizedBox(height: 20),
                 GradientButton(
-                  text: 'SETTINGS',
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SettingsModal(),
-                      ),
-                    );
-                  },
-                ),
-
+                    text: 'PENGATURAN',
+                    fontSize: 20,
+                    onPressed: () {
+                      sound.popSound();
+                      _showSettingsDialog(context);
+                    }),
                 const Spacer(),
               ],
             ),
@@ -88,63 +122,16 @@ class StartPage extends StatelessWidget {
   }
 }
 
-// Widget tombol dengan efek gradient & shadow
-class GradientButton extends StatelessWidget {
-  final String text;
-  final VoidCallback onPressed;
-
-  const GradientButton(
-      {super.key, required this.text, required this.onPressed});
+class _BackgroundImage extends StatelessWidget {
+  const _BackgroundImage();
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin:
-          const EdgeInsets.symmetric(vertical: 5), // Hindari pemotongan shadow
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.white.withValues(alpha: 0.5),
-            blurRadius: 10, // Efek blur shadow
-            spreadRadius: 2, // Lebar shadow lebih luas
-            offset:
-                const Offset(0, 5), // Geser shadow ke bawah agar terlihat alami
-          ),
-        ],
-      ),
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.zero, // Hapus padding default
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
-          ),
-          backgroundColor:
-              Colors.transparent, // Background dihandle oleh gradient
-          shadowColor: Colors.transparent, // Hindari shadow default button
-        ),
-        child: Ink(
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              colors: [Color(0xFFAA55FF), Color(0xFF7F18C8)],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-            ),
-            borderRadius: BorderRadius.circular(14),
-          ),
-          child: Container(
-            width: 160,
-            height: 55,
-            alignment: Alignment.center,
-            child: Text(
-              text,
-              style: const TextStyle(
-                fontFamily: 'FontdinerSwanky',
-                color: Color(0xFFFFF50B),
-                fontSize: 25,
-              ),
-            ),
-          ),
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/image/BackgroundGalaxy.png'),
+          fit: BoxFit.cover,
         ),
       ),
     );

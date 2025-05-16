@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'package:spacewordgameapp/constants/styles.dart';
+// ignore: unused_import
+import 'package:spacewordgameapp/page/character_customization_page.dart';
+import 'package:spacewordgameapp/page/level_page.dart';
 import 'package:spacewordgameapp/provider.dart';
+import 'package:spacewordgameapp/settings.dart';
 
 class GameLevelsPage extends StatelessWidget {
   const GameLevelsPage({super.key});
@@ -30,7 +36,7 @@ class GameLevelsPage extends StatelessWidget {
                 return Row(
                   children: [
                     Text(
-                      '${coinProvider.coins}', // Menampilkan jumlah koin
+                      '${coinProvider.coins}',
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 24,
@@ -42,12 +48,12 @@ class GameLevelsPage extends StatelessWidget {
                         height: 30,
                         child: Image.asset(
                           "assets/image/jam_coin.png",
-                          fit: BoxFit.contain, // Pastikan gambar tidak pecah
+                          fit: BoxFit.contain,
                           semanticLabel: "Ikon koin",
                         ),
                       ),
                       onPressed: () {
-                        debugPrint('Icon button pressed');
+                        debugPrint('Coin icon pressed');
                       },
                     ),
                   ],
@@ -69,38 +75,85 @@ class GameLevelsPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Gambar judul
               Image.asset(
-                'assets/image/space word.png',
+                'assets/image/LogoSpaceword.png',
                 width: 200,
               ),
-              const SizedBox(height: 70),
+              const SizedBox(height: 60),
 
-              // Baris tombol level
+              // Tombol level
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _buildDifficultyButton(
-                      context, 'EASY', Colors.green, 100, 140),
+                    context,
+                    'EASY',
+                    brandColorGreen,
+                    100,
+                    140,
+                    const EasyLevel(),
+                  ),
                   const SizedBox(width: 20),
                   _buildDifficultyButton(
-                      context, 'MEDIUM', Colors.blue, 140, 180),
+                    context,
+                    'MEDIUM',
+                    brandColorYellow,
+                    140,
+                    180,
+                    const MediumLevel(),
+                  ),
                   const SizedBox(width: 20),
                   _buildDifficultyButton(
-                      context, 'HARD', Colors.purple, 100, 140),
+                    context,
+                    'HARD',
+                    brandColorRed,
+                    100,
+                    140,
+                    const HardLevel(),
+                  ),
                 ],
               ),
-              const SizedBox(height: 50),
 
-              // Ikon berbentuk lingkaran di bagian bawah
+              const SizedBox(height: 45),
+
+              // Ikon navigasi bawah
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _buildCircleIcon("assets/image/Group.png"),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SettingsModal()),
+                      );
+                    },
+                    child: _buildCircleIcon("assets/image/Group.png"),
+                  ),
                   const SizedBox(width: 30),
-                  _buildCircleIcon("assets/image/material-symbols_home.png"),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CharacterCustomizationPage()),
+                      );
+                    },
+                    child: _buildCircleIcon(
+                        "assets/image/material-symbols_home.png"),
+                  ),
                   const SizedBox(width: 30),
-                  _buildCircleIcon("assets/image/tdesign_setting-filled.png"),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SettingsModal()),
+                      );
+                    },
+                    child: _buildCircleIcon(
+                        "assets/image/tdesign_setting-filled.png"),
+                  ),
                 ],
               ),
             ],
@@ -110,17 +163,19 @@ class GameLevelsPage extends StatelessWidget {
     );
   }
 
-  // Fungsi untuk membuat tombol level
-  Widget _buildDifficultyButton(BuildContext context, String text, Color color,
-      double width, double height) {
+  Widget _buildDifficultyButton(
+    BuildContext context,
+    String text,
+    Color color,
+    double width,
+    double height,
+    Widget destinationPage,
+  ) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (context) =>
-                GameLevelDetail(title: text, backgroundColor: color),
-          ),
+          MaterialPageRoute(builder: (context) => destinationPage),
         );
       },
       child: Container(
@@ -144,7 +199,6 @@ class GameLevelsPage extends StatelessWidget {
     );
   }
 
-  // Fungsi untuk membuat ikon berbentuk lingkaran
   Widget _buildCircleIcon(String imagePath) {
     return Container(
       width: 80,
@@ -164,35 +218,6 @@ class GameLevelsPage extends StatelessWidget {
           width: 40,
           height: 40,
           color: Colors.yellow,
-        ),
-      ),
-    );
-  }
-}
-
-// Halaman detail setiap level
-class GameLevelDetail extends StatelessWidget {
-  final String title;
-  final Color backgroundColor;
-
-  const GameLevelDetail({
-    super.key,
-    required this.title,
-    required this.backgroundColor,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(title), backgroundColor: backgroundColor),
-      body: Container(
-        decoration: BoxDecoration(color: backgroundColor),
-        child: Center(
-          child: Text(
-            title,
-            style: const TextStyle(
-                fontSize: 32, fontWeight: FontWeight.bold, color: Colors.white),
-          ),
         ),
       ),
     );

@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "429758957916",
+    "project_id": "spaceword-ff0f1",
+    "storage_bucket": "spaceword-ff0f1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:429758957916:android:a29b6440a00187cc111999",
+        "android_client_info": {
+          "package_name": "com.example.spacewordgameapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "429758957916-klsquf77392ea9g52pmvt50tjhrah0ap.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.spacewordgameapp",
+            "certificate_hash": "08d796848487495537e6fd7c5dd06ce8a278c686"
+          }
+        },
+        {
+          "client_id": "429758957916-f0fbujdki1nfj8khkn69c4fj69b45cib.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANYLUdrtPYP8UmDqMvkzHIO2VjbP85Fgg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "429758957916-f0fbujdki1nfj8khkn69c4fj69b45cib.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "429758957916-33af2p8a8ofsq54suatrj0mik8np38ln.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.spacewordgameapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

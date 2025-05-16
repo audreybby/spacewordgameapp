@@ -32,22 +32,26 @@ dependencies:
     sdk: flutter
   shared_preferences: ^2.0.15
   provider: ^6.0.0
-  supabase_flutter: ^2.8.4
   flutter_dotenv: ^5.1.0
   import_sorter: ^4.6.0
-  supabase_auth_ui: ^0.5.4
-  audioplayers: ^5.2.1
+  audioplayers: ^6.4.0
+
+  firebase_core: ^3.13.0
+  firebase_auth: ^5.5.3
+  cloud_firestore: ^5.6.7
+  google_sign_in: ^6.3.0
+  firebase_database: ^11.3.5
   # cupertino_icons: ^1.0.8
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.13.1
-  flutter_lints: ^4.0.0
+  flutter_launcher_icons: ^0.14.3
+  flutter_lints: ^5.0.0
 
 flutter_icons:
   android: true
-  ios: true
+  # ios: true
   image_path: "assets/image/Icon Game.png"
 
 import_sorter:
@@ -74,12 +78,9 @@ flutter:
     - assets/bodies/Alien Ungu.png
     - assets/clothes/KOSTUM PENCURI.png
     - assets/clothes/Kostum Domba.png
-    - assets/clothes/Kostum Iblis.png
-    - assets/clothes/Kostum Koki.png
     - assets/clothes/Kostum Raja.png
     - assets/clothes/Kostum Rubah.png
     - assets/clothes/Kostum Sapi.png
-    - assets/clothes/Kostum Koki Revisi.png
     - assets/clothes/Kostum Koki Revisi lagi.png
     - assets/clothes/Kostum Santa.png
     - assets/clothes/Kostum Iblis Revisi.png
@@ -94,4 +95,16 @@ flutter:
     - assets/questions/easy.json
     - assets/questions/medium.json
     - assets/questions/hard.json
+    - assets/image/Bg_Select_Character.png
+    - assets/Char/Karakter_Nova.png
+    - assets/Char/Karakter_Astro.png
+    - assets/Char/Karakter_Vega.png
+    - assets/image/rocket.png
+    - assets/image/berhasil.png
+    - assets/image/salah.png
+    - assets/image/ufo.png
     - assets/sound/backsound.mp3
+    - assets/sound/win.mp3
+    - assets/sound/lose.mp3
+    - assets/sound/click.mp3
+    - assets/sound/pop.mp3

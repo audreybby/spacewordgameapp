@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:spacewordgameapp/page/welcome_page.dart';
+import 'package:spacewordgameapp/page/login_screen.dart';
+// import 'package:spacewordgameapp/page/welcome_page.dart';
 // import 'package:spacewordgameapp/audioplayers.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -37,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen>
       if (!mounted) return;
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => const StartPage(),
+          builder: (context) => GoogleLoginPage(),
         ),
       );
     });

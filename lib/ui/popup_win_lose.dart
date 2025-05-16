@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:spacewordgameapp/page/character_customization_page.dart';
+// import 'package:spacewordgameapp/page/character_customization_page.dart';
 import 'package:spacewordgameapp/page/choose_level_page.dart';
+import 'package:spacewordgameapp/page/login_screen.dart';
 import 'package:spacewordgameapp/page/welcome_page.dart';
 import 'package:spacewordgameapp/provider.dart';
 
@@ -83,7 +84,6 @@ class _PopupState extends State<PopupWinLose>
                 alignment: Alignment.center,
                 children: [
                   Image.asset(characterProvider.selectedBody, width: 200),
-                  Image.asset(characterProvider.selectedClothes, width: 200),
                 ],
               );
             },
@@ -137,8 +137,7 @@ class _PopupState extends State<PopupWinLose>
         children: [
           _buildButton(
             icon: Icons.checkroom,
-            onPressed: () =>
-                _navigateTo(context, const CharacterCustomizationPage()),
+            onPressed: () => _navigateTo(context, GoogleLoginPage()),
           ),
           const SizedBox(width: 8),
           _buildButton(
@@ -148,7 +147,7 @@ class _PopupState extends State<PopupWinLose>
           const SizedBox(width: 8),
           _buildButton(
             icon: Icons.home,
-            onPressed: () => _navigateTo(context, const StartPage()),
+            onPressed: () => _navigateTo(context, const WelcomePage()),
           ),
         ],
       ),
