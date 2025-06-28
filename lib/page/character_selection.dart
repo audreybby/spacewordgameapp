@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:spacewordgameapp/navigation.dart';
+// import 'dart:ui' as ui;
 import 'package:spacewordgameapp/page/choose_level_page.dart';
-import 'dart:ui' as ui;
-
 import 'package:spacewordgameapp/soundefx.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CharacterSelectionPage extends StatefulWidget {
   const CharacterSelectionPage({super.key});
@@ -12,12 +14,14 @@ class CharacterSelectionPage extends StatefulWidget {
 }
 
 class _CharacterSelectionPageState extends State<CharacterSelectionPage> {
-  String? selectedCharacterName;
+  String? selectedCharacterPath;
   SoundEffects sound = SoundEffects();
+  final SoundEffects _soundEffects = SoundEffects();
+  List<String> purchasedBodies = [];
 
-  void selectCharacter(String name) {
+  void selectCharacter(String path) {
     setState(() {
-      selectedCharacterName = name;
+      selectedCharacterPath = path;
     });
   }
 
@@ -29,121 +33,147 @@ class _CharacterSelectionPageState extends State<CharacterSelectionPage> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
 
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/image/Bg_Select_Character.png'),
-            fit: BoxFit.cover,
+    return NoBackPage(
+      child: Scaffold(
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/image/Bg_Select_Character.png'),
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        child: Column(
-          children: [
-            const SizedBox(height: 80), // Header padding atas
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 40),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [
-                    Color(0xFFAA55FF),
-                    Color(0xFF7F18C8),
-                  ], // sama dengan tombol "LANJUT"
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
+          child: Column(
+            children: [
+              const SizedBox(height: 80),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 40),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [
+                      Color(0xFFAA55FF),
+                      Color(0xFF7F18C8),
+                    ],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.white.withAlpha((0.5 * 255).round()),
+                      blurRadius: 10,
+                      spreadRadius: 2,
+                      offset: const Offset(0, 5),
+                    ),
+                  ],
                 ),
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.white.withValues(alpha: 0.5),
-                    blurRadius: 10,
-                    spreadRadius: 2,
-                    offset: const Offset(0, 5),
-                  ),
-                ],
-              ),
-              child: const Column(
-                children: [
-                  Text(
-                    'PILIH',
-                    style: TextStyle(
-                      fontFamily: 'FontdinerSwanky',
-                      fontSize: 40,
-                      color: Color(0xFFFFF50B),
-                      height: 2.0,
+                child: const Column(
+                  children: [
+                    Text(
+                      'PILIH',
+                      style: TextStyle(
+                        fontFamily: 'FontdinerSwanky',
+                        fontSize: 40,
+                        color: Color(0xFFFFF50B),
+                        height: 2.0,
+                      ),
                     ),
-                  ),
-                  Text(
-                    'KARAKTER',
-                    style: TextStyle(
-                      fontFamily: 'FontdinerSwanky',
-                      fontSize: 40,
-                      color: Color(0xFFFFF50B),
-                      height: 1.5, // Ubah height agar tulisan lebih dekat
+                    Text(
+                      'KARAKTER',
+                      style: TextStyle(
+                        fontFamily: 'FontdinerSwanky',
+                        fontSize: 40,
+                        color: Color(0xFFFFF50B),
+                        height: 1.5,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 0), // Jarak setelah "PILIH KARAKTER"
-            SizedBox(
-              height: screenHeight * 0.4,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  CharacterOption(
-                    imagePath: 'assets/Char/Karakter_Astro.png',
-                    name: 'Astro',
-                    nameColor: Colors.cyan,
-                    isSelected: selectedCharacterName == 'Astro',
-                    onSelect: selectCharacter,
-                  ),
-                  CharacterOption(
-                    imagePath: 'assets/Char/Karakter_Vega.png',
-                    name: 'Vega',
-                    nameColor: const ui.Color.fromARGB(255, 208, 51, 203),
-                    isSelected: selectedCharacterName == 'Vega',
-                    onSelect: selectCharacter,
-                  ),
-                  CharacterOption(
-                    imagePath: 'assets/Char/Karakter_Nova.png',
-                    name: 'Nova',
-                    nameColor: const ui.Color.fromARGB(255, 64, 164, 116),
-                    isSelected: selectedCharacterName == 'Nova',
-                    onSelect: selectCharacter,
-                  ),
-                ],
+              const SizedBox(height: 0),
+              SizedBox(
+                height: screenHeight * 0.4,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    CharacterOption(
+                      imagePath: 'assets/Char/Karakter_Astro.png',
+                      isSelected: selectedCharacterPath ==
+                          'assets/Char/Karakter_Astro.png',
+                      onSelect: selectCharacter,
+                    ),
+                    CharacterOption(
+                      imagePath: 'assets/Char/Karakter_Vega.png',
+                      isSelected: selectedCharacterPath ==
+                          'assets/Char/Karakter_Vega.png',
+                      onSelect: selectCharacter,
+                    ),
+                    CharacterOption(
+                      imagePath: 'assets/Char/Karakter_Nova.png',
+                      isSelected: selectedCharacterPath ==
+                          'assets/Char/Karakter_Nova.png',
+                      onSelect: selectCharacter,
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const Spacer(),
-            GradientButton(
-              text: 'LANJUT',
-              onPressed: () {
-                sound.clickSound();
-                _navigateWithScale(context, const GameLevelsPage());
-              },
-            ),
-            const SizedBox(height: 80),
-          ],
+              const Spacer(),
+              GradientButton(
+                  text: 'LANJUT',
+                  onPressed: () async {
+                    if (selectedCharacterPath != null) {
+                      final uid = FirebaseAuth.instance.currentUser?.uid;
+
+                      if (uid != null) {
+                        final playerDoc = FirebaseFirestore.instance
+                            .collection('players')
+                            .doc(uid);
+
+                        // Tambahkan karakter ke purchasedBodies jika belum ada
+                        if (!purchasedBodies.contains(selectedCharacterPath)) {
+                          purchasedBodies.add(selectedCharacterPath!);
+                        }
+
+                        await playerDoc.set({
+                          'uid': uid,
+                          'selectedBody': selectedCharacterPath,
+                          'purchasedBodies': purchasedBodies,
+                          'hasSelectedCharacter': true,
+                        }, SetOptions(merge: true));
+
+                        _soundEffects.click();
+                        // ignore: use_build_context_synchronously
+                        _navigateWithScale(context, const GameLevelsPage());
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("Kamu belum login.")),
+                        );
+                      }
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text("Pilih karakter terlebih dahulu!")),
+                      );
+                    }
+                  }),
+              const SizedBox(height: 80),
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-//karakter
 class CharacterOption extends StatelessWidget {
   final String imagePath;
-  final String name;
-  final Color nameColor;
   final bool isSelected;
   final Function(String) onSelect;
 
   const CharacterOption({
     super.key,
     required this.imagePath,
-    required this.name,
-    required this.nameColor,
     required this.isSelected,
     required this.onSelect,
   });
@@ -154,7 +184,7 @@ class CharacterOption extends StatelessWidget {
 
     return Expanded(
       child: GestureDetector(
-        onTap: () => onSelect(name),
+        onTap: () => onSelect(imagePath),
         child: AnimatedScale(
           scale: isSelected ? 1.2 : 1.0,
           duration: const Duration(milliseconds: 300),
@@ -165,14 +195,13 @@ class CharacterOption extends StatelessWidget {
             decoration: BoxDecoration(
               border: isSelected
                   ? Border.all(
-                      color: Colors.white.withValues(alpha: 0.8),
-                      width: 4,
-                    )
+                      color: Colors.white.withAlpha((0.8 * 255).round()),
+                      width: 4)
                   : null,
               boxShadow: [
                 BoxShadow(
                   color: isSelected
-                      ? Colors.white.withValues(alpha: 0.7)
+                      ? Colors.white.withAlpha((0.7 * 255).round())
                       : Colors.transparent,
                   blurRadius: 30,
                   spreadRadius: 5,
@@ -183,31 +212,6 @@ class CharacterOption extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Stack(
-                  children: [
-                    // Outline putih
-                    Text(
-                      name,
-                      style: TextStyle(
-                        fontFamily: 'FontdinerSwanky',
-                        fontSize: 24,
-                        foreground: Paint()
-                          ..style = PaintingStyle.stroke
-                          ..strokeWidth = 4
-                          ..color = Colors.white,
-                      ),
-                    ),
-                    // Isi teks berwarna sesuai karakter
-                    Text(
-                      name,
-                      style: TextStyle(
-                        fontFamily: 'FontdinerSwanky',
-                        fontSize: 24,
-                        color: nameColor,
-                      ),
-                    ),
-                  ],
-                ),
                 const SizedBox(height: 12),
                 SizedBox(
                   height: screenHeight * 0.23,
@@ -259,7 +263,7 @@ class GradientButton extends StatelessWidget {
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: Colors.white.withValues(alpha: 0.5),
+            color: Colors.white.withAlpha((0.5 * 255).round()),
             blurRadius: 10,
             spreadRadius: 2,
             offset: const Offset(0, 5),

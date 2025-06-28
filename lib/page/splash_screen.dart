@@ -1,9 +1,7 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:spacewordgameapp/page/login_screen.dart';
-// import 'package:spacewordgameapp/page/welcome_page.dart';
-// import 'package:spacewordgameapp/audioplayers.dart';
+import 'package:spacewordgameapp/page/welcome_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -17,30 +15,38 @@ class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
-  // final audioService = AudioService(); // Buat instance AudioService
 
   @override
   void initState() {
     super.initState();
-    // audioService.playBackgroundMusic('audio/backsound.mp3');
+
     _controller = AnimationController(
       duration: const Duration(seconds: 4),
       vsync: this,
     )..forward();
 
-    // Future.delayed(Duration.zero, () {
-    //   audioService.playBackgroundMusic('audio/backsound.mp3');
-    // });
-
     _animation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
 
     Future.delayed(const Duration(seconds: 4), () {
       if (!mounted) return;
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => GoogleLoginPage(),
-        ),
-      );
+
+      User? user = FirebaseAuth.instance.currentUser;
+
+      if (user != null) {
+        // Sudah login, langsung ke halaman character selection
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const WelcomePage(),
+          ),
+        );
+      } else {
+        // Belum login, ke halaman login
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => GoogleLoginPage(),
+          ),
+        );
+      }
     });
   }
 
@@ -57,8 +63,8 @@ class _SplashScreenState extends State<SplashScreen>
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color(0xFF0D006F), // Warna pertama
-              Color(0xFF9614D0), // Warna kedua
+              Color(0xFF0D006F),
+              Color(0xFF9614D0),
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -69,17 +75,13 @@ class _SplashScreenState extends State<SplashScreen>
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Image.asset(
-                'assets/image/LOGO GEM DEV REVISI.png', // Ganti dengan nama file gambar Anda
+                'assets/image/LOGO GEM DEV REVISI.png',
                 width: 170,
               ),
               const SizedBox(height: 20),
-
-              // Stack untuk animasi loading dan jet
               Stack(
-                clipBehavior:
-                    Clip.none, // Memastikan jet bisa keluar dari area stack
+                clipBehavior: Clip.none,
                 children: [
-                  // Bar hitam sebagai background
                   Container(
                     width: 200,
                     height: 10,
@@ -88,7 +90,6 @@ class _SplashScreenState extends State<SplashScreen>
                       borderRadius: BorderRadius.circular(5),
                     ),
                   ),
-                  // Animasi loading kuning (tanpa gradasi)
                   AnimatedBuilder(
                     animation: _animation,
                     builder: (context, child) {
@@ -98,25 +99,22 @@ class _SplashScreenState extends State<SplashScreen>
                           width: 200 * _animation.value,
                           height: 10,
                           decoration: BoxDecoration(
-                            color: Colors.yellow, // Warna solid kuning
+                            color: Colors.yellow,
                             borderRadius: BorderRadius.circular(5),
                           ),
                         ),
                       );
                     },
                   ),
-                  // Animasi jet (ukuran 85x85 & posisinya dimajukan menutupi garis kuning)
                   AnimatedBuilder(
                     animation: _animation,
                     builder: (context, child) {
                       return Positioned(
-                        left: (200 * _animation.value) -
-                            42, // Majukan sedikit untuk menutupi garis kuning
-                        top:
-                            -40, // Posisikan sedikit lebih tinggi agar lebih dominan
+                        left: (200 * _animation.value) - 42,
+                        top: -40,
                         child: Image.asset(
-                          'assets/image/jet.png', // Ganti dengan gambar jet Anda
-                          width: 85, // Ukuran jet
+                          'assets/image/jet.png',
+                          width: 85,
                           height: 85,
                         ),
                       );
@@ -125,13 +123,12 @@ class _SplashScreenState extends State<SplashScreen>
                 ],
               ),
               const SizedBox(height: 10),
-              // Teks "Loading..." dengan FontdinerSwanky
               const Text(
                 "Loading...",
                 style: TextStyle(
-                  fontFamily: 'FontdinerSwanky', // Font kustom
+                  fontFamily: 'FontdinerSwanky',
                   color: Colors.white,
-                  fontSize: 20, // Ukuran teks sedikit diperbesar
+                  fontSize: 20,
                 ),
               ),
             ],

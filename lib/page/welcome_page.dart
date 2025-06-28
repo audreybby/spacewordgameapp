@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:spacewordgameapp/navigation.dart';
 import 'dart:async';
 import 'package:spacewordgameapp/page/character_selection.dart';
+import 'package:spacewordgameapp/provider.dart';
 import 'package:spacewordgameapp/settings.dart';
 import 'package:spacewordgameapp/soundefx.dart';
 import 'package:spacewordgameapp/audioplayers.dart';
-
-// import 'package:supabase_auth_ui/supabase_auth_ui.dart';
-// import 'package:spacewordgameapp/constants/styles.dart';
-// import 'package:spacewordgameapp/page/auth_page.dart';
-// import 'package:spacewordgameapp/page/character_customization_page.dart';
-// import 'package:spacewordgameapp/page/choose_level_page.dart';
-// import 'package:spacewordgameapp/ui/custom_button.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
+import 'package:spacewordgameapp/ui/exit.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});
@@ -20,13 +16,32 @@ class WelcomePage extends StatefulWidget {
   State<WelcomePage> createState() => _WelcomePageState();
 }
 
-class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
+class _WelcomePageState extends State<WelcomePage>
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   final AudioService _audioService = AudioService();
-  SoundEffects sound = SoundEffects();
+  late AnimationController _controller;
+  late Animation<double> _bounceAnimation;
 
   @override
   void initState() {
     super.initState();
+
+    Future.microtask(() {
+      final characterProvider =
+          Provider.of<CharacterProvider>(context, listen: false);
+      characterProvider.loadCharacter();
+    });
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    )..repeat(reverse: true);
+
+    _bounceAnimation = Tween<double>(
+      begin: -10.0,
+      end: 10.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+
     WidgetsBinding.instance.addObserver(this);
     _audioService.playBackgroundMusic('sound/backsound.mp3');
     _checkLoginStatus();
@@ -35,42 +50,24 @@ class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    // Logika untuk menghentikan/melanjutkan musik berdasarkan status aplikasi
     if (state == AppLifecycleState.inactive ||
         state == AppLifecycleState.paused) {
-      // Hentikan musik saat aplikasi tidak aktif atau dijeda
+      // Stop musik waktu menutup app
       _audioService.stopMusic();
     } else if (state == AppLifecycleState.resumed) {
-      // Mulai kembali musik saat aplikasi aktif kembali
+      // Mulai musik lagi ketika app dibuka
       _audioService.playBackgroundMusic('sound/backsound.mp3');
     }
   }
 
   @override
   void dispose() {
-    // Hapus observer dan hentikan musik saat halaman dihapus
+    // Hentikan musik saat halaman dihapus
     WidgetsBinding.instance.removeObserver(this);
-    _audioService.dispose();
     super.dispose();
   }
 
-  Future<void> _checkLoginStatus() async {
-    // Tambahkan implementasi untuk memeriksa status login
-  }
-
-  // void _navigateWithScale(BuildContext context, Widget page) {
-  //   Navigator.of(context).push(
-  //     PageRouteBuilder(
-  //       pageBuilder: (context, animation, secondaryAnimation) => page,
-  //       transitionsBuilder: (context, animation, secondaryAnimation, child) {
-  //         final scale = Tween<double>(begin: 0.9, end: 1.0).animate(
-  //           CurvedAnimation(parent: animation, curve: Curves.easeInOut),
-  //         );
-  //         return ScaleTransition(scale: scale, child: child);
-  //       },
-  //     ),
-  //   );
-  // }
+  Future<void> _checkLoginStatus() async {}
 
   void _showSettingsDialog(BuildContext context) {
     showDialog(
@@ -82,41 +79,76 @@ class _WelcomePageState extends State<WelcomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          const _BackgroundImage(),
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Spacer(),
-                Image.asset(
-                  'assets/image/LogoSpaceword.png',
-                  width: 600,
-                  height: 300,
+    return NoBackPage(
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        body: Stack(
+          children: [
+            const _BackgroundImage(),
+            Positioned(
+              top: 27,
+              right: 10,
+              child: GestureDetector(
+                onTap: () async {
+                  await SoundEffects().pop();
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) => const ExitModal(),
+                  );
+                },
+                child: Container(
+                  width: 90,
+                  height: 90,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("assets/image/logout_game.png"),
+                      fit: BoxFit.contain,
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 40),
-                GradientButton(
-                  text: 'MULAI',
-                  onPressed: () {
-                    sound.clickSound();
-                    Navigator.of(context).pushReplacementNamed('/charselect');
-                  },
-                ),
-                const SizedBox(height: 20),
-                GradientButton(
-                    text: 'PENGATURAN',
-                    fontSize: 20,
-                    onPressed: () {
-                      sound.popSound();
-                      _showSettingsDialog(context);
-                    }),
-                const Spacer(),
-              ],
+              ),
             ),
-          ),
-        ],
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Spacer(),
+                  AnimatedBuilder(
+                    animation: _bounceAnimation,
+                    builder: (context, child) {
+                      return Transform.translate(
+                        offset: Offset(0, _bounceAnimation.value),
+                        child: child,
+                      );
+                    },
+                    child: Image.asset(
+                      'assets/image/LogoSpaceword.png',
+                      width: 600,
+                      height: 300,
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  GradientButton(
+                    text: 'MULAI',
+                    onPressed: () async {
+                      await SoundEffects().click();
+                      Navigator.of(context).pushReplacementNamed('/level');
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  GradientButton(
+                      text: 'PENGATURAN',
+                      fontSize: 20,
+                      onPressed: () async {
+                        await SoundEffects().pop();
+                        _showSettingsDialog(context);
+                      }),
+                  const Spacer(),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

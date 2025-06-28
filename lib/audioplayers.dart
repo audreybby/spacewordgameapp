@@ -1,47 +1,49 @@
 import 'package:audioplayers/audioplayers.dart';
-import 'dart:developer';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AudioService {
   static final AudioService _instance = AudioService._internal();
-  final AudioPlayer _audioPlayer = AudioPlayer();
-  bool _isPlaying = false; // Menandakan apakah musik sedang diputar
+  final AudioPlayer _bgPlayer = AudioPlayer()
+    ..setPlayerMode(PlayerMode.mediaPlayer);
+  bool _isPlaying = false;
+  double _volume = 0.5;
 
-  factory AudioService() {
-    return _instance;
+  factory AudioService() => _instance;
+
+  AudioService._internal() {
+    _loadVolume();
   }
 
-  AudioService._internal();
+  Future<void> _loadVolume() async {
+    final prefs = await SharedPreferences.getInstance();
+    _volume = prefs.getDouble('music_volume') ?? 0.5;
+    await _bgPlayer.setVolume(_volume);
+  }
 
-  // Memulai musik latar jika belum diputar
-  Future<void> playBackgroundMusic(String filePath) async {
+  Future<void> playBackgroundMusic(String assetPath) async {
     if (!_isPlaying) {
-      try {
-        await _audioPlayer.play(AssetSource(filePath));
-        _audioPlayer
-            .setReleaseMode(ReleaseMode.loop); // Musik akan terus berulang
-        _isPlaying = true;
-        log('Musik latar berhasil diputar!');
-      } catch (e) {
-        log('Gagal memutar musik latar: $e');
-      }
+      await _bgPlayer.setReleaseMode(ReleaseMode.loop);
+      await _bgPlayer.setVolume(_volume);
+      await _bgPlayer.play(AssetSource(assetPath));
+      _isPlaying = true;
     }
   }
 
-  // Menghentikan musik jika sedang diputar
+  Future<void> setVolume(double volume) async {
+    _volume = volume;
+    await _bgPlayer.setVolume(_volume);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setDouble('music_volume', _volume);
+  }
+
   Future<void> stopMusic() async {
     if (_isPlaying) {
-      try {
-        await _audioPlayer.stop();
-        _isPlaying = false;
-        log('Musik dihentikan!');
-      } catch (e) {
-        log('Gagal menghentikan musik: $e');
-      }
+      await _bgPlayer.stop();
+      _isPlaying = false;
     }
   }
 
-  // Dispose resources
   void dispose() {
-    _audioPlayer.dispose();
+    _bgPlayer.dispose();
   }
 }

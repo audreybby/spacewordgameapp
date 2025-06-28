@@ -1,21 +1,34 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SoundEffects {
-  final player = AudioPlayer();
+  SoundEffects._privateConstructor(); // hanya satu konstruktor
+  static final SoundEffects _instance = SoundEffects._privateConstructor();
+  factory SoundEffects() => _instance;
 
-  void popSound() async {
-    await player.play(AssetSource('sound/pop.mp3'));
+  double _volume = 0.5;
+
+  // Panggil ini setelah instance dibuat
+  Future<void> init() async {
+    final prefs = await SharedPreferences.getInstance();
+    _volume = prefs.getDouble('sound_volume') ?? 0.5;
   }
 
-  void clickSound() async {
-    await player.play(AssetSource('sound/click.mp3'));
+  Future<void> setVolume(double volume) async {
+    _volume = volume;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setDouble('sound_volume', _volume);
   }
 
-  void winSound() async {
-    await player.play(AssetSource('sound/win.mp3'));
+  Future<void> playEffect(String filename) async {
+    final player = AudioPlayer();
+    await player.setPlayerMode(PlayerMode.lowLatency);
+    await player.setVolume(_volume);
+    await player.play(AssetSource('sound/$filename'));
   }
 
-  void loseSound() async {
-    await player.play(AssetSource('sound/lose.mp3'));
-  }
+  Future<void> click() => playEffect('click.mp3');
+  Future<void> pop() => playEffect('pop.mp3');
+  Future<void> win() => playEffect('win.mp3');
+  Future<void> lose() => playEffect('lose.mp3');
 }

@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:spacewordgameapp/page/character_customization_page.dart';
 
 // import 'package:spacewordgameapp/page/character_customization_page.dart';
-import 'package:spacewordgameapp/page/choose_level_page.dart';
-import 'package:spacewordgameapp/page/login_screen.dart';
 import 'package:spacewordgameapp/page/welcome_page.dart';
 import 'package:spacewordgameapp/provider.dart';
+import 'package:spacewordgameapp/soundefx.dart';
 
 enum PopupType { win, lose }
 
 class PopupWinLose extends StatefulWidget {
   final int score;
   final PopupType type;
+  final Widget retryPage;
 
   const PopupWinLose({
     super.key,
     required this.score,
     required this.type,
+    required this.retryPage,
   });
 
   @override
@@ -41,6 +43,14 @@ class _PopupState extends State<PopupWinLose>
       parent: _controller,
       curve: Curves.elasticOut,
     );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.type == PopupType.lose) {
+        SoundEffects().lose();
+      } else {
+        SoundEffects().win();
+      }
+    });
   }
 
   @override
@@ -52,16 +62,20 @@ class _PopupState extends State<PopupWinLose>
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: ScaleTransition(
-        scale: _animation,
-        child: Stack(
-          alignment: Alignment.center,
-          clipBehavior: Clip.none,
-          children: [
-            _popupBackground(),
-            _banner(),
-            _buttons(),
-          ],
+      child: Material(
+        // <-- Tambahkan ini
+        color: Colors.transparent, // penting untuk transparansi pop-up
+        child: ScaleTransition(
+          scale: _animation,
+          child: Stack(
+            alignment: Alignment.center,
+            clipBehavior: Clip.none,
+            children: [
+              _popupBackground(),
+              _banner(),
+              _buttons(),
+            ],
+          ),
         ),
       ),
     );
@@ -83,7 +97,7 @@ class _PopupState extends State<PopupWinLose>
               return Stack(
                 alignment: Alignment.center,
                 children: [
-                  Image.asset(characterProvider.selectedBody, width: 200),
+                  Image.asset(characterProvider.selectedBody, width: 100),
                 ],
               );
             },
@@ -137,17 +151,26 @@ class _PopupState extends State<PopupWinLose>
         children: [
           _buildButton(
             icon: Icons.checkroom,
-            onPressed: () => _navigateTo(context, GoogleLoginPage()),
+            onPressed: () async {
+              await SoundEffects().pop();
+              _navigateTo(context, CharacterCustomizationPage());
+            },
           ),
           const SizedBox(width: 8),
           _buildButton(
             text: widget.type == PopupType.win ? "PLAY AGAIN" : "RETRY",
-            onPressed: () => _navigateTo(context, const GameLevelsPage()),
+            onPressed: () async {
+              await SoundEffects().pop();
+              _navigateTo(context, widget.retryPage);
+            },
           ),
           const SizedBox(width: 8),
           _buildButton(
             icon: Icons.home,
-            onPressed: () => _navigateTo(context, const WelcomePage()),
+            onPressed: () async {
+              await SoundEffects().pop();
+              _navigateTo(context, const WelcomePage());
+            },
           ),
         ],
       ),

@@ -2,6 +2,10 @@ import 'dart:async';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:spacewordgameapp/audioplayers.dart';
+import 'package:spacewordgameapp/services/auth_service.dart';
+import 'package:spacewordgameapp/soundefx.dart';
 
 class SettingsModal extends StatefulWidget {
   const SettingsModal({super.key});
@@ -30,7 +34,16 @@ class _SettingsModalState extends State<SettingsModal>
       parent: _animationController,
       curve: Curves.easeOutBack,
     );
+    _loadVolumes(); // Tambahkan ini
     _animationController.forward();
+  }
+
+  Future<void> _loadVolumes() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _musicVolume = prefs.getDouble('music_volume') ?? 0.5;
+      _soundVolume = prefs.getDouble('sound_volume') ?? 0.5;
+    });
   }
 
   Future<ui.Image> _loadImage(String path) async {
@@ -40,6 +53,8 @@ class _SettingsModalState extends State<SettingsModal>
     ui.decodeImageFromList(list, (img) => completer.complete(img));
     return completer.future;
   }
+
+  final AuthService _authService = AuthService();
 
   @override
   void dispose() {
@@ -95,105 +110,121 @@ class _SettingsModalState extends State<SettingsModal>
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: Colors.transparent,
-      child: ScaleTransition(
-        scale: _scaleAnimation,
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFFBD7BFF), Color(0xFF7F18C8)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(25),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.white.withValues(alpha: 0.5),
-                    blurRadius: 10,
-                    offset: const Offset(0, 5),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text(
-                    "PENGATURAN",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontFamily: 'FontdinerSwanky',
-                      color: Color(0xFFFFF50B),
+        backgroundColor: Colors.transparent,
+        child: PopScope(
+          canPop: false,
+          child: ScaleTransition(
+            scale: _scaleAnimation,
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFFBD7BFF), Color(0xFF7F18C8)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  buildSlider(
-                    Icons.music_note,
-                    _musicVolume,
-                    (val) => setState(() => _musicVolume = val),
-                  ),
-                  buildSlider(
-                    Icons.volume_up,
-                    _soundVolume,
-                    (val) => setState(() => _soundVolume = val),
-                  ),
-                  const SizedBox(height: 20),
-                  SizedBox(
-                    width: 120,
-                    child: ElevatedButton(
-                      onPressed: () => SystemNavigator.pop(),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 200, 50, 39),
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                    borderRadius: BorderRadius.circular(25),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.white.withValues(alpha: 0.5),
+                        blurRadius: 10,
+                        offset: const Offset(0, 5),
                       ),
-                      child: const Text(
-                        "KELUAR",
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text(
+                        "PENGATURAN",
                         style: TextStyle(
                           fontSize: 20,
                           fontFamily: 'FontdinerSwanky',
                           color: Color(0xFFFFF50B),
                         ),
                       ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Positioned(
-              top: -10,
-              right: -10,
-              child: GestureDetector(
-                onTap: () => _animationController.reverse().then((_) {
-                  if (mounted) Navigator.of(context).pop();
-                }),
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: const Color(0xFFDBB3F8),
-                      width: 2,
-                    ),
-                    color: const Color(0xFFC465ED),
-                  ),
-                  child: const Icon(
-                    Icons.close,
-                    color: Colors.yellow,
-                    size: 35,
+                      const SizedBox(height: 20),
+                      buildSlider(
+                        Icons.music_note,
+                        _musicVolume,
+                        (val) {
+                          setState(() => _musicVolume = val);
+                          AudioService().setVolume(val);
+                        },
+                      ),
+                      buildSlider(
+                        Icons.volume_up,
+                        _soundVolume,
+                        (val) {
+                          setState(() => _soundVolume = val);
+                          SoundEffects().setVolume(val);
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      SizedBox(
+                        width: 120,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            await SoundEffects().pop();
+                            await _authService.signOut();
+                            if (context.mounted) {
+                              Navigator.pushReplacementNamed(context, '/login');
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                const Color.fromARGB(255, 200, 50, 39),
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: const Text(
+                            "KELUAR",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontFamily: 'FontdinerSwanky',
+                              color: Color(0xFFFFF50B),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
+                Positioned(
+                  top: -10,
+                  right: -10,
+                  child: GestureDetector(
+                    onTap: () => _animationController.reverse().then((_) async {
+                      await SoundEffects().pop();
+                      if (mounted) Navigator.of(context).pop();
+                    }),
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: const Color(0xFFDBB3F8),
+                          width: 2,
+                        ),
+                        color: const Color(0xFFC465ED),
+                      ),
+                      child: const Icon(
+                        Icons.close,
+                        color: Colors.yellow,
+                        size: 35,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
-    );
+          ),
+        ));
   }
 }
 

@@ -1,33 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'package:shared_preferences/shared_preferences.dart';
+class UserAuthProvider with ChangeNotifier {
+  String? _userId;
+
+  String? get userId => _userId;
+
+  void setUserId(String id) {
+    _userId = id;
+    notifyListeners();
+  }
+}
 
 class CoinProvider with ChangeNotifier {
-  int _coins = 1000;
+  int? _coins; // gunakan nullable int
+  final String userId;
+  bool _isLoading = true;
 
-  int get coins => _coins;
-
-  CoinProvider() {
-    _loadCoins();
+  CoinProvider(this.userId) {
+    loadCoins();
   }
 
+  int get coins => _coins ?? 0; // sementara bisa kembalikan 0 atau 0 untuk UI
+
+  bool get isLoading => _isLoading;
+
   void addCoins(int amount) {
-    _coins += amount;
-    _saveCoins();
-    notifyListeners();
+    if (_coins != null) {
+      _coins = _coins! + amount;
+      _saveCoins();
+      notifyListeners();
+    }
   }
 
   void subtractCoins(int amount) {
-    if (_coins >= amount) {
-      _coins -= amount;
+    if (_coins != null && _coins! >= amount) {
+      _coins = _coins! - amount;
       _saveCoins();
       notifyListeners();
     }
   }
 
   bool purchaseSkin(int price) {
-    if (_coins >= price) {
-      _coins -= price;
+    if (_coins != null && _coins! >= price) {
+      _coins = _coins! - price;
       _saveCoins();
       notifyListeners();
       return true;
@@ -36,9 +52,11 @@ class CoinProvider with ChangeNotifier {
   }
 
   void convertScoreToCoins(int score) {
-    _coins += score;
-    _saveCoins();
-    notifyListeners();
+    if (_coins != null) {
+      _coins = _coins! + score;
+      _saveCoins();
+      notifyListeners();
+    }
   }
 
   void resetCoins() {
@@ -53,40 +71,93 @@ class CoinProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void _saveCoins() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('coins', _coins);
+  Future<void> _saveCoins() async {
+    await FirebaseFirestore.instance.collection('players').doc(userId).set({
+      'coins': _coins,
+    }, SetOptions(merge: true));
   }
 
-  void _loadCoins() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    int? storedCoins = prefs.getInt('coins');
-    if (storedCoins != null) {
-      _coins = storedCoins;
+  Future<void> loadCoins() async {
+    try {
+      final doc = await FirebaseFirestore.instance
+          .collection('players')
+          .doc(userId)
+          .get();
+
+      if (doc.exists && doc.data() != null) {
+        final data = doc.data()!;
+        if (data.containsKey('coins')) {
+          _coins = data['coins'];
+        } else {
+          // jika tidak ada field 'coins', artinya user baru → set 1000
+          _coins = 1000;
+          await _saveCoins();
+        }
+      } else {
+        // user benar-benar baru, buat data baru
+        _coins = 1000;
+        await _saveCoins();
+      }
+    } catch (e) {
+      print('Error loading coins from Firestore: $e');
+      _coins = 1000; // fallback jika terjadi error
+    } finally {
+      _isLoading = false;
       notifyListeners();
     }
   }
 }
 
 class CharacterProvider with ChangeNotifier {
-  String _selectedBody = 'assets/bodies/Alien Biru.png';
+  // Default character
+  String _selectedBody = 'assets/Char/Karakter_Nova.png';
+  final String userId;
+  bool _isLoaded = false;
+
+  CharacterProvider(this.userId) {
+    loadCharacter(); // Load saat provider diinisialisasi
+  }
 
   String get selectedBody => _selectedBody;
+  bool get isLoaded => _isLoaded;
 
+  // Update karakter dan simpan ke Firestore
   void updateCharacter(String body, String clothes) {
     _selectedBody = body;
-    _saveToPreferences();
+    _saveCharacter();
     notifyListeners();
   }
 
-  Future<void> _saveToPreferences() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('selectedBody', _selectedBody);
+  // Simpan ke Firestore
+  Future<void> _saveCharacter() async {
+    try {
+      await FirebaseFirestore.instance.collection('players').doc(userId).set({
+        'selectedBody': _selectedBody,
+      }, SetOptions(merge: true));
+    } catch (e) {
+      print('Error saving character to Firestore: $e');
+    }
   }
 
-  Future<void> loadFromPreferences() async {
-    final prefs = await SharedPreferences.getInstance();
-    _selectedBody =
-        prefs.getString('selectedBody') ?? 'assets/bodies/Alien Biru.png';
+  // Load karakter dari Firestore
+  Future<void> loadCharacter() async {
+    if (_isLoaded) return; // Jangan load dua kali
+    try {
+      final doc = await FirebaseFirestore.instance
+          .collection('players')
+          .doc(userId)
+          .get();
+
+      if (doc.exists && doc.data() != null) {
+        final data = doc.data()!;
+        _selectedBody = data['selectedBody'] ??
+            _selectedBody; // fallback ke default jika null
+      }
+    } catch (e) {
+      print('Error loading character from Firestore: $e');
+    } finally {
+      _isLoaded = true;
+      notifyListeners();
+    }
   }
 }

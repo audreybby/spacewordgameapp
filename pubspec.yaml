@@ -52,7 +52,7 @@ dev_dependencies:
 flutter_icons:
   android: true
   # ios: true
-  image_path: "assets/image/Icon Game.png"
+  image_path: "assets/image/IconGame.png"
 
 import_sorter:
   comments: false # Optional, defaults to true
@@ -96,15 +96,32 @@ flutter:
     - assets/questions/medium.json
     - assets/questions/hard.json
     - assets/image/Bg_Select_Character.png
+    - assets/image/LevelSelection.png
     - assets/Char/Karakter_Nova.png
     - assets/Char/Karakter_Astro.png
     - assets/Char/Karakter_Vega.png
+    - assets/Char/adatBali.png
+    - assets/Char/adatGorontalo.png
+    - assets/Char/adatPapua.png
+    - assets/Char/bajuAnjing.png
+    - assets/Char/bajuTikus.png
+    - assets/Char/bajuKucing.png
+    - assets/image/Aksi_Nova.png
     - assets/image/rocket.png
     - assets/image/berhasil.png
     - assets/image/salah.png
     - assets/image/ufo.png
+    - assets/image/Bg_Custom_Char.png
+    - assets/image/bg_gameplay.png
+    - assets/image/back.png
+    - assets/image/coins.png
+    - assets/image/custom.png
+    - assets/image/home.png
+    - assets/image/setting.png
+    - assets/image/google.jpg
+    - assets/image/logout_game.png
     - assets/sound/backsound.mp3
-    - assets/sound/win.mp3
-    - assets/sound/lose.mp3
     - assets/sound/click.mp3
     - assets/sound/pop.mp3
+    - assets/sound/win.mp3
+    - assets/sound/lose.mp3

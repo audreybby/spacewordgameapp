@@ -1,224 +1,196 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:spacewordgameapp/navigation.dart';
 
-import 'package:spacewordgameapp/constants/styles.dart';
 // ignore: unused_import
 import 'package:spacewordgameapp/page/character_customization_page.dart';
 import 'package:spacewordgameapp/page/level_page.dart';
+import 'package:spacewordgameapp/page/welcome_page.dart';
 import 'package:spacewordgameapp/provider.dart';
 import 'package:spacewordgameapp/settings.dart';
+import 'package:spacewordgameapp/soundefx.dart';
 
-class GameLevelsPage extends StatelessWidget {
+class GameLevelsPage extends StatefulWidget {
   const GameLevelsPage({super.key});
 
   @override
+  State<GameLevelsPage> createState() => _GameLevelsPageState();
+}
+
+class _GameLevelsPageState extends State<GameLevelsPage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final coinProvider = Provider.of<CoinProvider>(context, listen: false);
+      coinProvider.loadCoins();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Image.asset(
-            "assets/image/back.png",
-            width: 50,
-            height: 50,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: Consumer<CoinProvider>(
-              builder: (context, coinProvider, child) {
-                return Row(
-                  children: [
-                    Text(
-                      '${coinProvider.coins}',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                      ),
-                    ),
-                    IconButton(
-                      icon: SizedBox(
-                        width: 30,
-                        height: 30,
-                        child: Image.asset(
-                          "assets/image/jam_coin.png",
-                          fit: BoxFit.contain,
-                          semanticLabel: "Ikon koin",
+    return NoBackPage(
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          automaticallyImplyLeading: false,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Consumer<CoinProvider>(
+                builder: (context, coinProvider, child) {
+                  if (coinProvider.isLoading) {
+                    return const SizedBox(
+                      width: 80,
+                      height: 44,
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
                         ),
                       ),
-                      onPressed: () {
-                        debugPrint('Coin icon pressed');
-                      },
-                    ),
-                  ],
-                );
-              },
+                    );
+                  }
+
+                  return Row(
+                    children: [
+                      Text(
+                        '${coinProvider.coins}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 34,
+                          fontWeight: FontWeight.bold,
+                          shadows: [
+                            Shadow(
+                              blurRadius: 6.0,
+                              color: Colors.deepOrangeAccent,
+                              offset: Offset(0, 0),
+                            ),
+                          ],
+                        ),
+                      ),
+                      IconButton(
+                        icon: SizedBox(
+                          width: 44,
+                          height: 44,
+                          child: Image.asset("assets/image/coins.png"),
+                        ),
+                        onPressed: () {},
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/image/LevelSelection.png"),
+              fit: BoxFit.cover,
             ),
           ),
-        ],
-      ),
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFF2E0C5A), Color(0xFF631AC0)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomLeft,
-          ),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                'assets/image/LogoSpaceword.png',
-                width: 200,
-              ),
-              const SizedBox(height: 60),
+          child: SafeArea(
+            child: Column(
+              children: [
+                const SizedBox(height: 30),
+                Image.asset('assets/image/LogoSpaceword.png', width: 220),
+                const SizedBox(height: 50),
 
-              // Tombol level
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _buildDifficultyButton(
-                    context,
-                    'EASY',
-                    brandColorGreen,
-                    100,
-                    140,
-                    const EasyLevel(),
-                  ),
-                  const SizedBox(width: 20),
-                  _buildDifficultyButton(
-                    context,
-                    'MEDIUM',
-                    brandColorYellow,
-                    140,
-                    180,
-                    const MediumLevel(),
-                  ),
-                  const SizedBox(width: 20),
-                  _buildDifficultyButton(
-                    context,
-                    'HARD',
-                    brandColorRed,
-                    100,
-                    140,
-                    const HardLevel(),
-                  ),
-                ],
-              ),
+                // Tombol level
+                Column(
+                  children: [
+                    _buildLevelButton('EASY', Colors.green, const EasyLevel()),
+                    const SizedBox(height: 20),
+                    _buildLevelButton(
+                        'MEDIUM', Colors.yellow, const MediumLevel()),
+                    const SizedBox(height: 20),
+                    _buildLevelButton('HARD', Colors.red, const HardLevel()),
+                  ],
+                ),
 
-              const SizedBox(height: 45),
+                const SizedBox(height: 45),
 
-              // Ikon navigasi bawah
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () {
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildCircleIcon("assets/image/custom.png", () async {
+                      await SoundEffects().pop();
                       Navigator.push(
+                        // ignore: use_build_context_synchronously
                         context,
                         MaterialPageRoute(
-                            builder: (context) => SettingsModal()),
+                            builder: (_) => const CharacterCustomizationPage()),
                       );
-                    },
-                    child: _buildCircleIcon("assets/image/Group.png"),
-                  ),
-                  const SizedBox(width: 30),
-                  GestureDetector(
-                    onTap: () {
+                    }, size: 110),
+                    _buildCircleIcon("assets/image/home.png", () async {
+                      await SoundEffects().pop();
                       Navigator.push(
+                        // ignore: use_build_context_synchronously
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => CharacterCustomizationPage()),
+                        MaterialPageRoute(builder: (_) => WelcomePage()),
                       );
-                    },
-                    child: _buildCircleIcon(
-                        "assets/image/material-symbols_home.png"),
-                  ),
-                  const SizedBox(width: 30),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SettingsModal()),
+                    }, size: 115),
+                    _buildCircleIcon("assets/image/setting.png", () async {
+                      await SoundEffects().pop();
+                      showDialog(
+                        // ignore: use_build_context_synchronously
+                        context: context,
+                        builder: (context) => SettingsModal(),
                       );
-                    },
-                    child: _buildCircleIcon(
-                        "assets/image/tdesign_setting-filled.png"),
-                  ),
-                ],
-              ),
-            ],
+                    }, size: 110),
+                  ],
+                ),
+                const SizedBox(height: 30),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildDifficultyButton(
-    BuildContext context,
-    String text,
-    Color color,
-    double width,
-    double height,
-    Widget destinationPage,
-  ) {
+  Widget _buildLevelButton(String label, Color color, Widget destination) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => destinationPage),
-        );
+      onTap: () async {
+        await SoundEffects().click();
+        // ignore: use_build_context_synchronously
+        Navigator.push(context, MaterialPageRoute(builder: (_) => destination));
       },
       child: Container(
-        width: width,
-        height: height,
+        width: 200,
+        height: 60,
         decoration: BoxDecoration(
           color: color,
-          borderRadius: BorderRadius.circular(15),
-          border: Border.all(color: Colors.grey, width: 5),
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: const [BoxShadow(blurRadius: 4, color: Colors.black45)],
         ),
         alignment: Alignment.center,
         child: Text(
-          text,
+          label,
           style: const TextStyle(
+            fontFamily: 'FontdinerSwanky',
             color: Colors.white,
-            fontSize: 20,
+            fontSize: 24,
             fontWeight: FontWeight.bold,
+            letterSpacing: 1.5,
           ),
         ),
       ),
     );
   }
 
-  Widget _buildCircleIcon(String imagePath) {
-    return Container(
-      width: 80,
-      height: 80,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        gradient: const LinearGradient(
-          colors: [Colors.blue, Colors.lightBlueAccent],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        border: Border.all(color: Colors.grey, width: 5),
-      ),
-      child: Center(
-        child: Image.asset(
-          imagePath,
-          width: 40,
-          height: 40,
-          color: Colors.yellow,
-        ),
+  Widget _buildCircleIcon(String path, VoidCallback onTap, {double size = 90}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Image.asset(
+        path,
+        width: size,
+        height: size,
+        fit: BoxFit.contain,
       ),
     );
   }
